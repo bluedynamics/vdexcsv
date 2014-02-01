@@ -19,3 +19,6 @@ devsrc
 docs/Makefile
 docs/make.bat
 dist
+local/
+lib/
+include/
