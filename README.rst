@@ -259,6 +259,8 @@ Help Text
 Source Code
 ===========
 
+.. image:: https://travis-ci.org/bluedynamics/vdexcsv.png?branch=master   :target: https://travis-ci.org/bluedynamics/vdexcsv
+
 The sources are in a GIT DVCS with its main branches at 
 `github <http://github.com/bluedynamics/vdexcsv>`_.
 
