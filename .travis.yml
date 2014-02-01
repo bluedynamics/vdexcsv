@@ -1,6 +1,7 @@
 language: python
 python: "2.7"
 install:
-  - python2.7 bootstrap.py
+  - virtualenv-2.7 .
+  - ./bin/python2.7 bootstrap.py
   - ./bin/buildout -q
 script: ./bin/test

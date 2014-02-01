@@ -4,32 +4,37 @@ from pprint import pprint
 from interlude import interact
 import lxml.etree as etree
 
+
 optionflags = doctest.NORMALIZE_WHITESPACE | \
               doctest.ELLIPSIS | \
               doctest.REPORT_ONLY_FIRST_FAILURE
 
 TESTFILES = [
-    'api.txt',
-    'script.txt',
+    'api.rst',
+    'script.rst',
 ]
+
 
 def fxml(xml):
     et = etree.fromstring(xml)
     return etree.tostring(et, pretty_print=True)
 
+
 def pxml(xml):
     print fxml(xml)
+
 
 def test_suite():
     return unittest.TestSuite([
         doctest.DocFileSuite(
-            file, 
+            filename,
             optionflags=optionflags,
             globs={'interact': interact,
                    'pprint': pprint,
                    'pxml': pxml},
-        ) for file in TESTFILES
+        ) for filename in TESTFILES
     ])
 
-if __name__ == '__main__':                                   #pragma NO COVERAGE
-    unittest.main(defaultTest='test_suite')                  #pragma NO COVERAGE
+
+if __name__ == '__main__':  # pragma NO COVERAGE
+    unittest.main(defaultTest='test_suite')  # pragma NO COVERAGE
