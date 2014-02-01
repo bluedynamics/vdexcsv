@@ -5,6 +5,7 @@
                 [--keycolumn [KEYCOLUMN]] [--startcolumn [STARTCOLUMN]]
                 [--ordered [ORDERED]] [--dialect [DIALECT]]
                 [--csvdelimiter [CSVDELIMITER]] [--treedelimiter [TREEDELIMITER]]
+                [--encoding [ENCODING]]
                 id name source target
     <BLANKLINE>
     Converts CSV files to VDEX XML
@@ -41,3 +42,6 @@
                             Delimiter used to split the key the vocabulary into a
                             path to determine the position in the tree, default
                             dot.
+      --encoding [ENCODING], -e [ENCODING]
+                            Encoding of input file. Default: utf-8
+

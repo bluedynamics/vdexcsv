@@ -7,7 +7,8 @@ import lxml.etree as etree
 
 optionflags = doctest.NORMALIZE_WHITESPACE | \
               doctest.ELLIPSIS | \
-              doctest.REPORT_ONLY_FIRST_FAILURE
+              doctest.REPORT_ONLY_FIRST_FAILURE #| \
+#              doctest.REPORT_NDIFF
 
 TESTFILES = [
     'api.rst',

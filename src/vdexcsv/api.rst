@@ -33,9 +33,9 @@ Get the CSV, first flat::
     >>> c2v = api.CSV2VDEX('test', 'Test', infilename, 'test1.xml', startrow=1, 
     ...                    langs=['en', 'de'])    
     >>> c2v._csvdict
-    OrderedDict([('100', (OrderedDict(), ['hundered', 'hundert'], '100')), 
-    ('1000', (OrderedDict(), ['thousand', 'tausend'], '1000')), ('10000', 
-    (OrderedDict(), ['ten thousand', 'zehntausend'], '10000'))])
+    OrderedDict([('100', (OrderedDict(), [u'hundered', u'hundert'], '100')), 
+    ('1000', (OrderedDict(), [u'thousand', u'tausend'], '1000')), ('10000', 
+    (OrderedDict(), [u'ten thousand', u'zehntausend'], '10000'))])
     
 and as tree::
 
@@ -43,17 +43,18 @@ and as tree::
     >>> c2v = api.CSV2VDEX('test', 'TestEn,TestDe', infilename, 
     ...                    'test1.xml', startrow=1, langs=['en', 'de'])
     >>> c2v._csvdict
-    OrderedDict([('100', (OrderedDict([('1', (OrderedDict(), ['one', 'eins'], 
-    '100.1')), ('2', (OrderedDict(), ['two', 'zwei'], '100.2'))]), ['hundered', 
-    'hundert'], '100')), ('1000', (OrderedDict([('a', (OrderedDict(), ['A', 
-    'A'], '1000.a')), ('b', (OrderedDict(), ['B', 'B'], '1000.b'))]), 
-    ['thousand', 'tausend'], '1000')), ('10000', (OrderedDict([('X', 
-    (OrderedDict([('YZ', (OrderedDict(), ['YZ', 'YZ'], '10000.X.YZ')), ('123', 
-    (OrderedDict(), ['one two three', 'eins zwei drei'], '10000.X.123'))]), 
-    ['ex', 'ix'], '10000.X')), ('Y', (OrderedDict(), ['epsilon', 'ypsilon'], 
-    '10000.Y'))]), ['ten thousand', 'zehntausend'], '10000'))])
-    
-    
+    OrderedDict([('100', (OrderedDict([('1', (OrderedDict(), [u'one', u'eins'], 
+    '100.1')), ('2', (OrderedDict(), [u'two', u'zwei'], '100.2'))]), 
+    [u'hundered', u'hundert'], '100')), ('1000', (OrderedDict([('a', 
+    (OrderedDict(), [u'A', u'A'], '1000.a')), ('b', (OrderedDict(), [u'B', 
+    u'B'], '1000.b'))]), [u'thousand', u'tausend'], '1000')), ('10000', 
+    (OrderedDict([('X', (OrderedDict([('YZ', (OrderedDict(), [u'YZ', u'YZ'], 
+    '10000.X.YZ')), ('123', (OrderedDict(), [u'one two three', u'eins zwei 
+    drei'], '10000.X.123'))]), [u'ex', u'ix'], '10000.X')), ('Y', 
+    (OrderedDict(), [u'epsilon', u'ypsilon'], '10000.Y'))]), [u'ten 
+    thousand', u'zehntausend'], '10000'))])
+
+
 Get the XML::
 
     >>> print c2v._xml 
