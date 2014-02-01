@@ -2,6 +2,12 @@
 History
 =======
 
+1.3
+---
+
+- fix tests and add github project to *Travis CI*.
+  [jensens, 2014-02-01]
+
 1.2
 ---
 
