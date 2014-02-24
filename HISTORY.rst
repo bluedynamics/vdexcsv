@@ -6,6 +6,7 @@ History
 ---
 
 - fix tests and add github project to *Travis CI*.
+  housekeeping and encoding error fixed
   [jensens, 2014-02-01]
 
 1.2
