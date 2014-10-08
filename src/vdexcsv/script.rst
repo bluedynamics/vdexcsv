@@ -1,11 +1,11 @@
     >>> from vdexcsv.script import parser
 
     >>> parser.print_help()
-    usage: test [-h] [--languages [LANGUAGES]] [--startrow [STARTROW]]
-                [--keycolumn [KEYCOLUMN]] [--startcolumn [STARTCOLUMN]]
-                [--ordered [ORDERED]] [--dialect [DIALECT]]
-                [--csvdelimiter [CSVDELIMITER]] [--treedelimiter [TREEDELIMITER]]
-                [--encoding [ENCODING]]
+    usage: test [-h] [--languages [LANGUAGES]] [--description [DESCRIPTION]]
+                [--startrow [STARTROW]] [--keycolumn [KEYCOLUMN]] 
+                [--startcolumn [STARTCOLUMN]] [--ordered [ORDERED]]
+                [--dialect [DIALECT]] [--csvdelimiter [CSVDELIMITER]]
+                [--treedelimiter [TREEDELIMITER]] [--encoding [ENCODING]]
                 id name source target
     <BLANKLINE>
     Converts CSV files to VDEX XML
@@ -23,6 +23,10 @@
       --languages [LANGUAGES], -l [LANGUAGES]
                             Comma separated list of ISO-language codes. Default:
                             en
+      --description [DESCRIPTION], -d [DESCRIPTION]
+                            Whether the terms have descriptions. If so, each term
+                            takes up two columns per language: one for the caption
+                            and one for the description. Default: True
       --startrow [STARTROW], -r [STARTROW]
                             number of row in CSV file where to begin reading,
                             starts with 0, default 0.
@@ -34,7 +38,7 @@
                             vocabulary. It assume n + number languages of columns
                             after this, starts counting with 0, default 1.
       --ordered [ORDERED], -o [ORDERED]
-                            Wether vocabulary is ordered or not, Default: True
+                            Whether vocabulary is ordered or not, Default: True
       --dialect [DIALECT]   CSV dialect, default excel.
       --csvdelimiter [CSVDELIMITER]
                             CSV delimiter of the source file, default colon.
