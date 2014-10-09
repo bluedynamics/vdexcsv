@@ -229,9 +229,53 @@ As a CSV this looks like::
 
 After running through csv2vdex, called like so::
 
-    csv2vdex terms 'Terminology' terms.csv terms.xml --description
+    csv2vdex --description True --csvdelimiter "," terms "Terminology" terms.csv terms.xml
 
 This results in such a VDEX XML::
+
+    <vdex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.imsglobal.org/xsd/imsvdex_v1p0" xsi:schemaLocation="http://www.imsglobal.org/imsvdex_v1p0 imsvdex_v1p0.xsd" profileType="lax" orderSignificant="true">
+      <vocabIdentifier>terms</vocabIdentifier>
+      <vocabName>
+        <langstring language="en">Terminology</langstring>
+      </vocabName>
+      <term>
+        <termIdentifier>field_work_terms</termIdentifier>
+        <caption>
+          <langstring language="en">Field work terms</langstring>
+        </caption>
+        <description>
+          <langstring language="en"></langstring>
+        </description>
+        <term>
+          <termIdentifier>field_work_terms.1</termIdentifier>
+          <caption>
+            <langstring language="en">Acidification</langstring>
+          </caption>
+          <description>
+            <langstring language="en">Acidification is a process. It happens naturally ...</langstring>
+          </description>
+        </term>
+        <term>
+          <termIdentifier>field_work_terms.2</termIdentifier>
+          <caption>
+            <langstring language="en">Aquifer</langstring>
+          </caption>
+          <description>
+            <langstring language="en">If you get a shovel and dig at the ground below your ...</langstring>
+          </description>
+        </term>
+        <term>
+          <termIdentifier>field_work_terms.3</termIdentifier>
+          <caption>
+            <langstring language="en">Biodiversity</langstring>
+          </caption>
+          <description>
+            <langstring language="en">This has many contentious meanings but for our ...</langstring>
+          </description>
+        </term>
+      </term>
+    </vdex>
+
 
 Help Text
 =========
@@ -239,7 +283,8 @@ Help Text
 ::
 
 	usage: csv2vdex [-h] [--languages [LANGUAGES]] [--startrow [STARTROW]]
-			[--keycolumn [KEYCOLUMN]] [--startcolumn [STARTCOLUMN]]
+            [--description [DESCRIPTION]] [--keycolumn [KEYCOLUMN]]
+            [--startcolumn [STARTCOLUMN]]
 			[--ordered [ORDERED]] [--dialect [DIALECT]]
 			[--csvdelimiter [CSVDELIMITER]]
 			[--treedelimiter [TREEDELIMITER]] [--encoding [ENCODING]]
@@ -247,8 +292,8 @@ Help Text
 	csv2vdex: error: too few arguments
 	jensens@minime:~/workspace/vdexcsv$ ./bin/csv2vdex --help
 	usage: csv2vdex [-h] [--languages [LANGUAGES]] [--startrow [STARTROW]]
-            [--description]
-			[--keycolumn [KEYCOLUMN]] [--startcolumn [STARTCOLUMN]]
+            [--description [DESCRIPTION]] [--keycolumn [KEYCOLUMN]]
+            [--startcolumn [STARTCOLUMN]]
 			[--ordered [ORDERED]] [--dialect [DIALECT]]
 			[--csvdelimiter [CSVDELIMITER]]
 			[--treedelimiter [TREEDELIMITER]] [--encoding [ENCODING]]
@@ -316,3 +361,4 @@ Contributors
 
 - Peter Holzer <hpeter@agitator.com>
 
+- Jean Jordaan <jean.jordaan@gmail.com>
