@@ -84,10 +84,10 @@ class CSV2VDEX(object):
                     branch = branch[part][0]
                     continue
                 values = []
-                for l in self.langs:
-                    values.append(item[l].decode(self.encoding))
+                for lang in self.langs:
+                    values.append(item[lang].decode(self.encoding))
                     if self.description:
-                        values.append(item[l+' desc'].decode(self.encoding))
+                        values.append(item[lang+' desc'].decode(self.encoding))
                 branch[part] = (
                     OrderedDict(),
                     values,
