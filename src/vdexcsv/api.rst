@@ -1,3 +1,4 @@
+Set us up::
 
     >>> from vdexcsv import api 
     
@@ -33,10 +34,10 @@ Get the CSV, first flat::
     >>> c2v = api.CSV2VDEX('test', 'Test', infilename, 'test1.xml', startrow=1, 
     ...                    langs=['en', 'de'])    
     >>> c2v._csvdict
-    OrderedDict([('100', (OrderedDict(), [u'hundered', u'hundert'], '100')), 
-    ('1000', (OrderedDict(), [u'thousand', u'tausend'], '1000')), ('10000', 
-    (OrderedDict(), [u'ten thousand', u'zehntausend'], '10000'))])
-    
+    OrderedDict([('100', (OrderedDict(), [u'hundered', u'hundert'], u'100')), 
+    ('1000', (OrderedDict(), [u'thousand', u'tausend'], u'1000')), ('10000', 
+    (OrderedDict(), [u'ten thousand', u'zehntausend'], u'10000'))])
+
 and as tree::
 
     >>> infilename = os.path.join(testdatadir, 'test2.csv')
@@ -44,15 +45,15 @@ and as tree::
     ...                    'test1.xml', startrow=1, langs=['en', 'de'])
     >>> c2v._csvdict
     OrderedDict([('100', (OrderedDict([('1', (OrderedDict(), [u'one', u'eins'], 
-    '100.1')), ('2', (OrderedDict(), [u'two', u'zwei'], '100.2'))]), 
-    [u'hundered', u'hundert'], '100')), ('1000', (OrderedDict([('a', 
-    (OrderedDict(), [u'A', u'A'], '1000.a')), ('b', (OrderedDict(), [u'B', 
-    u'B'], '1000.b'))]), [u'thousand', u'tausend'], '1000')), ('10000', 
+    u'100.1')), ('2', (OrderedDict(), [u'two', u'zwei'], u'100.2'))]), 
+    [u'hundered', u'hundert'], u'100')), ('1000', (OrderedDict([('a', 
+    (OrderedDict(), [u'A', u'A'], u'1000.a')), ('b', (OrderedDict(), [u'B', 
+    u'B'], u'1000.b'))]), [u'thousand', u'tausend'], u'1000')), ('10000', 
     (OrderedDict([('X', (OrderedDict([('YZ', (OrderedDict(), [u'YZ', u'YZ'], 
-    '10000.X.YZ')), ('123', (OrderedDict(), [u'one two three', u'eins zwei 
-    drei'], '10000.X.123'))]), [u'ex', u'ix'], '10000.X')), ('Y', 
-    (OrderedDict(), [u'epsilon', u'ypsilon'], '10000.Y'))]), [u'ten 
-    thousand', u'zehntausend'], '10000'))])
+    u'10000.X.YZ')), ('123', (OrderedDict(), [u'one two three', u'eins zwei 
+    drei'], u'10000.X.123'))]), [u'ex', u'ix'], u'10000.X')), ('Y', 
+    (OrderedDict(), [u'epsilon', u'ypsilon'], u'10000.Y'))]), [u'ten 
+    thousand', u'zehntausend'], u'10000'))])
 
 
 Get the XML::
@@ -142,4 +143,61 @@ Get the XML::
         </term>
       </term>
     </vdex>
-    
+
+Get some CSV with descriptions::
+
+    >>> import os
+    >>> testdatadir =  os.path.join(os.path.dirname(api.__file__), 'testdata')
+    >>> infilename = os.path.join(testdatadir, 'test3.csv')
+    >>> c2v = api.CSV2VDEX('test', 'Test', infilename, 'test3.xml', startrow=1, 
+    ...                    langs=['en', 'de'], description=True)
+    >>> c2v._csvdict
+    OrderedDict([('100', (OrderedDict(), [u'hundered', u'Hundred things',
+    u'hundert', u'Hundert dingen'], u'100')), ('1000', (OrderedDict(),
+    [u'thousand', u'Even more things', u'tausend', u'Mehr dingen'], u'1000')),
+    ('10000', (OrderedDict(), [u'ten thousand', u'A lot of things',
+    u'zehntausend', u'Sehr viel dingen'], u'10000'))])
+
+Get the XML::
+
+    >>> print c2v._xml 
+    <vdex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.imsglobal.org/xsd/imsvdex_v1p0" xsi:schemaLocation="http://www.imsglobal.org/imsvdex_v1p0 imsvdex_v1p0.xsd" profileType="lax" orderSignificant="true">
+      <vocabIdentifier>test</vocabIdentifier>
+      <vocabName>
+        <langstring language="en">Test</langstring>
+      </vocabName>
+      <term>
+        <termIdentifier>100</termIdentifier>
+        <caption>
+          <langstring language="en">hundered</langstring>
+          <langstring language="de">hundert</langstring>
+        </caption>
+        <description>
+          <langstring language="en">Hundred things</langstring>
+          <langstring language="de">Hundert dingen</langstring>
+        </description>
+      </term>
+      <term>
+        <termIdentifier>1000</termIdentifier>
+        <caption>
+          <langstring language="en">thousand</langstring>
+          <langstring language="de">tausend</langstring>
+        </caption>
+        <description>
+          <langstring language="en">Even more things</langstring>
+          <langstring language="de">Mehr dingen</langstring>
+        </description>
+      </term>
+      <term>
+        <termIdentifier>10000</termIdentifier>
+        <caption>
+          <langstring language="en">ten thousand</langstring>
+          <langstring language="de">zehntausend</langstring>
+        </caption>
+        <description>
+          <langstring language="en">A lot of things</langstring>
+          <langstring language="de">Sehr viel dingen</langstring>
+        </description>
+      </term>
+    </vdex>
+ 

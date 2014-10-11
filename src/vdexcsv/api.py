@@ -19,7 +19,7 @@ class CSV2VDEX(object):
     def __init__(self, vid, names, infile, outfile,
                  startrow=0, colkey=0, colstartvalue=1, langs='en',
                  dialect='excel', delimiter=';', treevocabdelimiter='.',
-                 ordered=True, encoding='utf-8'):
+                 ordered=True, encoding='utf-8', description=False):
         self.vid = vid
         if isinstance(langs, basestring):
             langs = [_.strip() for _ in langs.split(',')]
@@ -35,6 +35,7 @@ class CSV2VDEX(object):
         self.delimiter = delimiter
         self.treevocabdelimiter = treevocabdelimiter
         self.ordered = ordered
+        self.description = description
         if dialect not in csv.list_dialects():
             raise ValueError(
                 "given csv dialect '%s' is unknown. " % dialect + \
@@ -45,13 +46,19 @@ class CSV2VDEX(object):
 
     @property
     def _fields(self):
-        maxlen = max(self.colstartvalue + len(self.langs), self.colkey + 1)
+        langcols = len(self.langs)
+        if self.description:
+            langcols = langcols * 2
+        maxlen = max(self.colstartvalue + langcols, self.colkey + 1)
         fields = ['__genkey-%s' % _ for _ in range(0, maxlen)]
         fields[self.colkey] = 'key'
         for idx in range(0, len(self.langs)):
             if self.colstartvalue + idx == self.colkey:
-                raise ValueError('key column is same range as value columns')
-            fields[self.colstartvalue + idx] = self.langs[idx]
+                raise ValueError('key column is in same range as value columns')
+            colnr = self.description and idx*2 or idx
+            fields[self.colstartvalue + colnr] = self.langs[idx]
+            if self.description:
+                fields[self.colstartvalue + colnr + 1] = self.langs[idx] + ' desc'
         return fields
 
     @property
@@ -76,7 +83,11 @@ class CSV2VDEX(object):
                 if idx < length - 1:
                     branch = branch[part][0]
                     continue
-                values = [item[_].decode(self.encoding) for _ in self.langs]
+                values = []
+                for lang in self.langs:
+                    values.append(item[lang].decode(self.encoding))
+                    if self.description:
+                        values.append(item[lang+' desc'].decode(self.encoding))
                 branch[part] = (
                     OrderedDict(),
                     values,
@@ -106,10 +117,18 @@ class CSV2VDEX(object):
                 termid = etree.SubElement(term, vtag('termIdentifier'))
                 termid.text = longkey
                 caption = etree.SubElement(term, vtag('caption'))
-                for idx in range(0, len(values)):
+                for idx in range(0, len(self.langs)):
+                    colnr = self.description and idx*2 or idx
                     langstring = etree.SubElement(caption, vtag('langstring'))
-                    langstring.text = values[idx]
+                    langstring.text = values[colnr]
                     langstring.attrib['language'] = self.langs[idx]
+                if self.description:
+                    description = etree.SubElement(term, vtag('description'))
+                    for idx in range(0, len(self.langs)):
+                        colnr = (idx*2)+1
+                        descstring = etree.SubElement(description, vtag('langstring'))
+                        descstring.text = values[colnr]
+                        descstring.attrib['language'] = self.langs[idx]
                 treeworker(subtree, term)
         treeworker(self._csvdict, root)
         return etree.tostring(root, pretty_print=True)

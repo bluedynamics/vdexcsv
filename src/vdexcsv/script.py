@@ -5,6 +5,10 @@ parser = argparse.ArgumentParser(description='Converts CSV files to VDEX XML')
 parser.add_argument('--languages', '-l', nargs='?', default='en', 
                     help='Comma separated list of ISO-language codes. ' 
                     'Default: en')
+parser.add_argument('--description', '-d', nargs='?', type=bool, default=False, 
+                    help='Whether the terms have descriptions. If so, each term '
+                        'takes up two columns per language: one for the caption '
+                        'and one for the description. Default: True')
 parser.add_argument('--startrow', '-r', nargs='?', type=int, default=0, 
                     help='number of row in CSV file where to begin reading, '
                         'starts with 0, default 0.')
@@ -16,7 +20,7 @@ parser.add_argument('--startcolumn', '-s', nargs='?', type=int, default=1,
                          'vocabulary. It assume n + number languages of columns'
                          ' after this, starts counting with 0, default 1.')
 parser.add_argument('--ordered', '-o', nargs='?', type=bool, default=True, 
-                    help='Wether vocabulary is ordered or not, Default: True')
+                    help='Whether vocabulary is ordered or not, Default: True')
 parser.add_argument('--dialect', nargs='?', default='excel', 
                     help='CSV dialect, default excel.')
 parser.add_argument('--csvdelimiter', nargs='?', default=';', 
@@ -43,4 +47,4 @@ def run():
     api.CSV2VDEX(ns.id[0], ns.name[0], ns.source[0], ns.target[0], 
                  ns.startrow, ns.keycolumn, ns.startcolumn, ns.languages, 
                  ns.dialect, ns.csvdelimiter, ns.treedelimiter, 
-                 ns.ordered, ns.encoding)()
+                 ns.ordered, ns.encoding, ns.description)()

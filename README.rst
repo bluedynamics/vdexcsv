@@ -1,4 +1,5 @@
-Converter from CSV file to a multilingual IMS VDEX voacabulary XML file.
+Converter from CSV file to a multilingual IMS VDEX vocabulary XML file
+======================================================================
 
 VDEX is a very good standardized format for multilingual vocabularies, 
 ontologies, etc. It just sucks to create its XML manually. There is poor editor 
@@ -18,7 +19,7 @@ k03 wasp    Wespe    vespa
 k04 hornet  Hornisse calabrone
 === ======= ======== =========
 
-As a csv this looks like::
+As a CSV this looks like::
 
     "key";"english";"german";"italian"
     "k01";"ant";"Ameise";"formica"
@@ -31,7 +32,7 @@ After running through csv2vdex, called like so::
     csv2vdex insects 'insects,Insekten,insetto' \
              insects.csv insects.xml --languages en,de,it --startrow 1
 
-This results it such a VDEX XML::
+This results in such a VDEX XML::
 
     <vdex xmlns="http://www.imsglobal.org/xsd/imsvdex_v1p0" orderSignificant="true">
       <vocabIdentifier>insects</vocabIdentifier>
@@ -206,14 +207,84 @@ The result is::
         </term>
       </term>
     </vdex>
-    
+
+A tree-vocabulary with descriptions 
+------------------------------------
+
+================== ================ ===================================================
+key                english          description
+================== ================ ===================================================
+field_work_terms   Field work terms
+field_work_terms.1 Acidification    Acidification is a process. It happens naturall ...
+field_work_terms.2 Aquifer          If you get a shovel and dig at the ground below ...
+field_work_terms.3 Biodiversity     This has many contentious meanings but for our ...
+================== ================ ===================================================
+
+As a CSV this looks like::
+
+    field_work_terms,Field work terms,
+    field_work_terms.1,Acidification,"Acidification is a process. It happens naturally ..."
+    field_work_terms.2,Aquifer,"If you get a shovel and dig at the ground below your ..."
+    field_work_terms.3,Biodiversity,"This has many contentious meanings but for our ..."
+
+After running through csv2vdex, called like so::
+
+    csv2vdex --description True --csvdelimiter "," terms "Terminology" terms.csv terms.xml
+
+This results in such a VDEX XML::
+
+    <vdex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.imsglobal.org/xsd/imsvdex_v1p0" xsi:schemaLocation="http://www.imsglobal.org/imsvdex_v1p0 imsvdex_v1p0.xsd" profileType="lax" orderSignificant="true">
+      <vocabIdentifier>terms</vocabIdentifier>
+      <vocabName>
+        <langstring language="en">Terminology</langstring>
+      </vocabName>
+      <term>
+        <termIdentifier>field_work_terms</termIdentifier>
+        <caption>
+          <langstring language="en">Field work terms</langstring>
+        </caption>
+        <description>
+          <langstring language="en"></langstring>
+        </description>
+        <term>
+          <termIdentifier>field_work_terms.1</termIdentifier>
+          <caption>
+            <langstring language="en">Acidification</langstring>
+          </caption>
+          <description>
+            <langstring language="en">Acidification is a process. It happens naturally ...</langstring>
+          </description>
+        </term>
+        <term>
+          <termIdentifier>field_work_terms.2</termIdentifier>
+          <caption>
+            <langstring language="en">Aquifer</langstring>
+          </caption>
+          <description>
+            <langstring language="en">If you get a shovel and dig at the ground below your ...</langstring>
+          </description>
+        </term>
+        <term>
+          <termIdentifier>field_work_terms.3</termIdentifier>
+          <caption>
+            <langstring language="en">Biodiversity</langstring>
+          </caption>
+          <description>
+            <langstring language="en">This has many contentious meanings but for our ...</langstring>
+          </description>
+        </term>
+      </term>
+    </vdex>
+
+
 Help Text
 =========
 
 ::
 
 	usage: csv2vdex [-h] [--languages [LANGUAGES]] [--startrow [STARTROW]]
-			[--keycolumn [KEYCOLUMN]] [--startcolumn [STARTCOLUMN]]
+            [--description [DESCRIPTION]] [--keycolumn [KEYCOLUMN]]
+            [--startcolumn [STARTCOLUMN]]
 			[--ordered [ORDERED]] [--dialect [DIALECT]]
 			[--csvdelimiter [CSVDELIMITER]]
 			[--treedelimiter [TREEDELIMITER]] [--encoding [ENCODING]]
@@ -221,7 +292,8 @@ Help Text
 	csv2vdex: error: too few arguments
 	jensens@minime:~/workspace/vdexcsv$ ./bin/csv2vdex --help
 	usage: csv2vdex [-h] [--languages [LANGUAGES]] [--startrow [STARTROW]]
-			[--keycolumn [KEYCOLUMN]] [--startcolumn [STARTCOLUMN]]
+            [--description [DESCRIPTION]] [--keycolumn [KEYCOLUMN]]
+            [--startcolumn [STARTCOLUMN]]
 			[--ordered [ORDERED]] [--dialect [DIALECT]]
 			[--csvdelimiter [CSVDELIMITER]]
 			[--treedelimiter [TREEDELIMITER]] [--encoding [ENCODING]]
@@ -232,7 +304,7 @@ Help Text
 	positional arguments:
 	  id                    unique identifier of vocabulary
 	  name                  Human readable name of vocabulary. If more than one
-				language is given separate each langstring by a colon
+				language is given separate each langstring by a comma
 				and provide same order as argument --languages
 	  source                CSV file to read from
 	  target                XML target file
@@ -242,6 +314,10 @@ Help Text
 	  --languages [LANGUAGES], -l [LANGUAGES]
 				Comma separated list of ISO-language codes. Default:
 				en
+      --description
+                Whether the terms have descriptions. If so, each term takes 
+                up two columns per language: one for the caption and one for
+                the description.
 	  --startrow [STARTROW], -r [STARTROW]
 				number of row in CSV file where to begin reading,
 				starts with 0, default 0.
@@ -250,13 +326,15 @@ Help Text
 				start with 0, default 0.
 	  --startcolumn [STARTCOLUMN], -s [STARTCOLUMN]
 				number of column with the first langstring of the
-				vocabulary. It assume n + number languages of columns
+				vocabulary. It assumes n + number languages of columns
 				after this, starts counting with 0, default 1.
+                If terms include description, it assumes two columns 
+                per language.
 	  --ordered [ORDERED], -o [ORDERED]
-				Wether vocabulary is ordered or not, Default: True
+				Whether vocabulary is ordered or not, Default: True
 	  --dialect [DIALECT]   CSV dialect, default excel.
 	  --csvdelimiter [CSVDELIMITER]
-				CSV delimiter of the source file, default colon.
+				CSV delimiter of the source file, default semicolon.
 	  --treedelimiter [TREEDELIMITER]
 				Delimiter used to split the key the vocabulary into a
 				path to determine the position in the tree, default
@@ -283,3 +361,4 @@ Contributors
 
 - Peter Holzer <hpeter@agitator.com>
 
+- Jean Jordaan <jean.jordaan@gmail.com>
