@@ -2,8 +2,8 @@
 History
 =======
 
-unreleased
-----------
+1.4 (unreleased)
+----------------
 
 - teach csv2vdex about term descriptions
   [jean, 2014-10-09]
