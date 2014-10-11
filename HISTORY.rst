@@ -2,7 +2,7 @@
 History
 =======
 
-1.4 (unreleased)
+1.4 (2014-10-12)
 ----------------
 
 - teach csv2vdex about term descriptions
